@@ -3,7 +3,7 @@ import { Service, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-const TOKEN_KEY = 'chat_bot_auth_token';
+export const AUTH_TOKEN_KEY = 'chat_bot_auth_token';
 
 export interface LoginResponse {
   token: string;
@@ -28,7 +28,7 @@ export class Auth {
   }
 
   logout(): void {
-    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(AUTH_TOKEN_KEY);
     this.tokenSignal.set(null);
     this.isLoggedIn.set(false);
   }
@@ -38,12 +38,12 @@ export class Auth {
   }
 
   private setToken(token: string): void {
-    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
     this.tokenSignal.set(token);
     this.isLoggedIn.set(true);
   }
 
   private readStoredToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(AUTH_TOKEN_KEY);
   }
 }

@@ -1,21 +1,4 @@
 npm notice run ui-chat-bot@0.0.0 npx
 npm notice run ng serve --port 4200
-❯ Building...
-✔ Building...
-Initial chunk files | Names         | Raw size
-main.js             | main          |  3.29 kB | 
-chunk-IVUJNHEM.js   | -             |  1.82 kB | 
-styles.css          | styles        | 95 bytes | 
-
-                    | Initial total |  5.20 kB
-
-Lazy chunk files    | Names         | Raw size
-chunk-A35XHNXB.js   | chat          | 11.77 kB | 
-chunk-CFOPY2IR.js   | login         |  9.61 kB | 
-
-Application bundle generation complete. [2.233 seconds] - 2026-09-14T10:58:41.538Z
-
-Watch mode enabled. Watching for file changes...
-NOTE: Raw file sizes do not reflect development server per-request transformations.
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4200[22m/[39m
-[2m4:28:43 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [optimizer] bundling dependencies...
+An unhandled exception occurred: Port 4200 is already in use. Use '--port' to specify a different port.
+See "C:\Users\91766\AppData\Local\Temp\ng-CLHlWC\angular-errors.log" for further details.

@@ -1,33 +1,59 @@
-<div class="login-container">
-  <form class="login-card" (ngSubmit)="onSubmit()" novalidate>
-    <h1>Chat Bot Login</h1>
+<div class="login-page">
+  <div class="login-panel">
+    <div class="brand">
+      <div class="brand-mark">💬</div>
+      <span>ChatBot</span>
+    </div>
 
-    <label for="username">Username</label>
-    <input
-      id="username"
-      name="username"
-      type="text"
-      autocomplete="username"
-      [ngModel]="username()"
-      (ngModelChange)="username.set($event)"
-    />
+    <h1>Welcome back</h1>
+    <p class="subtitle">Sign in to start chatting with the bot.</p>
 
-    <label for="password">Password</label>
-    <input
-      id="password"
-      name="password"
-      type="password"
-      autocomplete="current-password"
-      [ngModel]="password()"
-      (ngModelChange)="password.set($event)"
-    />
+    <form class="login-form" (ngSubmit)="onSubmit()" novalidate>
+      <label class="field">
+        <span class="field-label">Username</span>
+        <input
+          name="username"
+          type="text"
+          autocomplete="username"
+          placeholder="admin"
+          [ngModel]="username()"
+          (ngModelChange)="username.set($event)"
+        />
+      </label>
 
-    @if (errorMessage()) {
-      <p class="error">{{ errorMessage() }}</p>
-    }
+      <label class="field">
+        <span class="field-label">Password</span>
+        <input
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="••••••••"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+        />
+      </label>
 
-    <button type="submit" [disabled]="isSubmitting()">
-      {{ isSubmitting() ? 'Signing in...' : 'Sign in' }}
-    </button>
-  </form>
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+
+      <button type="submit" [disabled]="isSubmitting()">
+        @if (isSubmitting()) {
+          <span class="spinner"></span>
+        }
+        {{ isSubmitting() ? 'Signing in...' : 'Sign in' }}
+      </button>
+    </form>
+
+    <p class="hint">Demo credentials are configured in the backend's <code>application.yml</code>.</p>
+  </div>
+
+  <div class="login-showcase" aria-hidden="true">
+    <div class="showcase-glow"></div>
+    <div class="showcase-card">
+      <div class="showcase-row bot">Hi! How can I help you today?</div>
+      <div class="showcase-row user">Tell me something interesting.</div>
+      <div class="showcase-row bot">This is a test response from the chat bot.</div>
+    </div>
+  </div>
 </div>
