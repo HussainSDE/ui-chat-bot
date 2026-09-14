@@ -1,0 +1,33 @@
+<div class="login-container">
+  <form class="login-card" (ngSubmit)="onSubmit()" novalidate>
+    <h1>Chat Bot Login</h1>
+
+    <label for="username">Username</label>
+    <input
+      id="username"
+      name="username"
+      type="text"
+      autocomplete="username"
+      [ngModel]="username()"
+      (ngModelChange)="username.set($event)"
+    />
+
+    <label for="password">Password</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      autocomplete="current-password"
+      [ngModel]="password()"
+      (ngModelChange)="password.set($event)"
+    />
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <button type="submit" [disabled]="isSubmitting()">
+      {{ isSubmitting() ? 'Signing in...' : 'Sign in' }}
+    </button>
+  </form>
+</div>
