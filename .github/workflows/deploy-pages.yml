@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npx ng test --watch=false
+
+      - name: Build
+        run: npx ng build --configuration deploy
+
+      # GitHub Pages has no server-side routing, so a deep link or refresh on
+      # e.g. /chat would 404. Serving index.html for unknown paths lets the
+      # Angular router take over client-side.
+      - name: Add SPA fallback for client-side routing
+        run: cp dist/ui-chat-bot/browser/index.html dist/ui-chat-bot/browser/404.html
+
+      # Deployment requires a repo variable named PAGES_CUSTOM_DOMAIN (e.g.
+      # chat.yourdomain.com) under Settings > Secrets and variables > Actions
+      # > Variables. Without it, the build/test steps above still run for CI
+      # signal, but the actual Pages deployment is skipped below.
+      - name: Write custom domain
+        if: ${{ vars.PAGES_CUSTOM_DOMAIN != '' }}
+        run: echo "${{ vars.PAGES_CUSTOM_DOMAIN }}" > dist/ui-chat-bot/browser/CNAME
+
+      - name: Remind to configure custom domain
+        if: ${{ vars.PAGES_CUSTOM_DOMAIN == '' }}
+        run: |
+          echo "::notice title=Deployment skipped::PAGES_CUSTOM_DOMAIN repository variable is not set, so the GitHub Pages deployment was skipped. Add it under Settings > Secrets and variables > Actions > Variables (value = e.g. chat.yourdomain.com) to enable deployment."
+
+      - name: Upload artifact
+        if: ${{ vars.PAGES_CUSTOM_DOMAIN != '' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/ui-chat-bot/browser
+
+  deploy:
+    needs: build
+    if: ${{ vars.PAGES_CUSTOM_DOMAIN != '' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
