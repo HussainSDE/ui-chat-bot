@@ -1,0 +1,31 @@
+<div class="chat-page">
+  <header class="chat-header">
+    <h1>Chat Bot</h1>
+    <button type="button" class="logout" (click)="logout()">Log out</button>
+  </header>
+
+  <div class="chat-messages">
+    @for (message of messages(); track $index) {
+      <div class="message" [class.user]="message.sender === 'user'" [class.bot]="message.sender === 'bot'">
+        {{ message.text }}
+      </div>
+    }
+    @if (messages().length === 0) {
+      <p class="empty">Say something to get started.</p>
+    }
+  </div>
+
+  <form class="chat-input" (ngSubmit)="sendMessage()" novalidate>
+    <input
+      type="text"
+      name="draft"
+      placeholder="Type a message..."
+      [ngModel]="draft()"
+      (ngModelChange)="draft.set($event)"
+      [disabled]="isSending()"
+    />
+    <button type="submit" [disabled]="isSending()">
+      {{ isSending() ? 'Sending...' : 'Send' }}
+    </button>
+  </form>
+</div>
