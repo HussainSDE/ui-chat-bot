@@ -28,7 +28,7 @@
             "styles": ["src/styles.css"]
           },
           "configurations": {
-            "production": {
+            "deploy": {
               "budgets": [
                 {
                   "type": "initial",
@@ -41,7 +41,13 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.deploy.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -49,13 +55,13 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "ui-chat-bot:build:production"
+            "deploy": {
+              "buildTarget": "ui-chat-bot:build:deploy"
             },
             "development": {
               "buildTarget": "ui-chat-bot:build:development"
